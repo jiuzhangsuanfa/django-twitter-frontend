@@ -1,23 +1,18 @@
+import { CircularProgress } from '@material-ui/core';
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter } from 'react-router-dom';
+import Router from './router';
 import './App.css';
-import { Button } from '@material-ui/core'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Button>Hello, world!</Button>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div id="loading" className="hidden">
+        <CircularProgress />
+      </div>
+      <BrowserRouter>
+        <Router></Router>
+      </BrowserRouter>
     </div>
   );
 }
