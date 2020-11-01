@@ -1,15 +1,13 @@
-import { CircularProgress } from '@material-ui/core';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import './App.css';
+import { Loading } from './components/Loading';
 import Router from './router';
 
 function App() {
   return (
     <>
-      <div id="loading" className="hidden">
-        <CircularProgress />
-      </div>
+      <Loading id="loading"></Loading>
       <BrowserRouter>
         <Router></Router>
       </BrowserRouter>
