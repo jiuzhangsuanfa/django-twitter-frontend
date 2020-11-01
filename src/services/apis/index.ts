@@ -1,5 +1,5 @@
-import Axios from 'axios';
 import { SERVER } from '../../constants';
+import { axios } from './interceptors';
 
 export interface ParamsLogin {
   username: string;
@@ -8,7 +8,7 @@ export interface ParamsLogin {
 
 export async function login({ username, password }: ParamsLogin) {
 
-  return Axios
+  return axios
     .post(SERVER + 'login', { username, password })
     .then(response => response.data);
 
