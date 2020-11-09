@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { accountReducer } from './account';
+import { accountReducer } from './accounts';
 
 export interface ActionType<T, P = any> {
   type: T;
