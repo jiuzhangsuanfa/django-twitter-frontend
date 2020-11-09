@@ -128,3 +128,121 @@ const { register, handleSubmit, errors } = useForm({
   <input type="submit" />
 </form>
 ```
+
+## 4. 使用 Redux 完成 API 调用与状态管理
+
+### 4.1 安装依赖
+
+```shell
+npm i -S react-redux redux-thunk
+```
+
+### 4.2 创建 API
+
+```typescript
+// services/apis/account.ts
+export async function login({ username, password }: ParamsLogin): Promise<ReturnLogin> {
+
+  return axios
+    .post<any, any>(SERVER + 'login', { username, password });
+
+}
+```
+
+### 4.3 创建 Action
+
+```typescript
+// actions/account.ts
+export function loginAction(data: ParamsLogin) {
+  return async (dispatch: any) => {
+    const result = await login(data);
+    console.log({ result })
+    dispatch({ type: AccountType.Login, payload: result });
+  }
+}
+```
+
+### 4.4 创建 Reducer
+
+```typescript
+// reducer/account.ts
+export const accountReducer = (state: any, action: ActionType<AccountType>) => {
+  console.log(action);
+  const { token, user } = action.payload || {};
+  switch (action.type) {
+    case AccountType.Login:
+      return { token, user };
+  }
+};
+```
+
+### 4.5 创建 Store
+
+```typescript
+// index.tsx
+const store = createStore(
+  rootReducers,
+  applyMiddleware(thunk)
+);
+
+ReactDOM.render(
+  <Provider store={store}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </Provider>,
+  document.getElementById('root')
+);
+```
+
+### 4.6 调用 Dispatch
+
+```tsx
+// pages/Login/index.tsx
+import { useDispatch } from 'react-redux';
+
+export default function LoginPage() {
+  const dispatch = useDispatch();
+
+  const handleLogin = async (data: ParamsLogin) => {
+    const result = await dispatch(loginAction(data));
+  }
+}
+```
+
+### 4.7 新增错误提示
+
+安装依赖
+
+```shell
+npm i -S notistack
+```
+
+调用 SnackBar
+
+```tsx
+// pages/Login/index.tsx
+import { useSnackbar } from 'notistack';
+
+export default function LoginPage() {
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleLogin = async (data: ParamsLogin) => {
+    try {
+      const result = await dispatch(loginAction(data));
+      console.log({ result });
+      history.push('/');
+    } catch (error) {
+      let message = '';
+      switch (error.message) {
+        case 'Network Error':
+          message = '网络异常，请检查网络';
+          break;
+        default:
+          message = '登录失败，请稍后重试';
+      }
+      enqueueSnackbar(message, { variant: 'error' });
+    }
+  }
+}
+```

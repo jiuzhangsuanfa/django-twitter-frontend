@@ -10,7 +10,8 @@
    5. React Hook Form(react-hook-form@6)
    6. yup(yup@0.29)
    7. notistack(notistack@1)
-   8. Redux(react-redux@7)
+   8. React Redux(react-redux@7)
+   9. Redux Thunk(redux-thunk)
 2. Login Page
 3. APIs
 4. Loading Component

@@ -1,13 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { Provider } from 'react-redux';
+import { SnackbarProvider } from 'notistack';
+import { applyMiddleware, createStore } from 'redux';
+import thunk from 'redux-thunk';
 import App from './App';
+import './index.css';
+import { rootReducers } from './reducers';
 import reportWebVitals from './reportWebVitals';
 
+const store = createStore(
+  rootReducers,
+  applyMiddleware(thunk)
+);
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <SnackbarProvider maxSnack={3}>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </SnackbarProvider>
+  </Provider>,
   document.getElementById('root')
 );
 
