@@ -1,13 +1,13 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import './App.css';
-import { Loading } from './components/Loading';
+import { LoadingComponent } from './components/Loading';
 import Router from './router';
 
 function App() {
   return (
     <>
-      <Loading id="loading"></Loading>
+      <LoadingComponent id="loading"></LoadingComponent>
       <BrowserRouter>
         <Router></Router>
       </BrowserRouter>
