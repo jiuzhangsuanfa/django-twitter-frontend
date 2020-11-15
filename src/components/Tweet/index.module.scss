@@ -1,0 +1,61 @@
+.user {
+  display        : flex;
+  flex-direction : row;
+  justify-content: flex-start;
+  align-items    : center;
+  margin         : 0.5rem;
+
+  >.avatar {
+    margin: 0 0.5rem;
+  }
+
+  >.info {
+    margin   : 0 0.5rem;
+    flex-grow: 1;
+
+    >.nickname {
+      font-weight: bold;
+    }
+
+    >.username {
+      color    : gray;
+      font-size: small;
+    }
+  }
+
+  >.time {
+    margin   : 0 0.5rem;
+    color    : gray;
+    font-size: small;
+  }
+}
+
+.content {
+  margin: 1rem;
+
+  >.text {}
+
+  >.image {}
+}
+
+.action {
+  display        : flex;
+  flex-direction : row;
+  justify-content: space-between;
+  align-items    : center;
+  margin         : 0.5rem;
+
+  >.grow {
+    flex-grow: 1;
+  }
+
+  >.button {
+    flex-grow: 1;
+  }
+}
+
+.split {
+  border-color: lightgray;
+  border-width: 0.1rem;
+  border-style: solid;
+}
