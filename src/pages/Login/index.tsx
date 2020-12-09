@@ -1,7 +1,7 @@
 import { Button, Link, TextField, Typography } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack';
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
@@ -22,10 +22,10 @@ export default function LoginPage({ history }: { history: any }) {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { register, handleSubmit, watch, errors } = useForm<ParamsLogin>();
+  const { register, handleSubmit, errors, setValue } = useForm<ParamsLogin>();
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const setUsername = (username: string) => setValue('username', username);
+  const setPassword = (password: string) => setValue('password', password);
 
   const getErrorMessageFromUsername = () => {
     if (!errors.username) { return ''; }
@@ -87,7 +87,6 @@ export default function LoginPage({ history }: { history: any }) {
             variant="outlined"
             style={{ marginTop: '1rem', marginBottom: '1rem' }}
             autoComplete="username"
-            value={username}
             onChange={event => setUsername(event.currentTarget.value)}
             name="username"
             inputRef={register({ required: true, minLength: 6, maxLength: 32 })}
@@ -102,7 +101,6 @@ export default function LoginPage({ history }: { history: any }) {
             variant="outlined"
             style={{ marginBottom: '1rem' }}
             autoComplete="current-password"
-            value={password}
             onChange={event => setPassword(event.currentTarget.value)}
             name="password"
             inputRef={register({ required: true, minLength: 6, maxLength: 32 })}
