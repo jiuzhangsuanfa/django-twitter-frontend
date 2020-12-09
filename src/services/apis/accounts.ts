@@ -22,6 +22,7 @@ export async function login({ username, password }: ParamsLogin): Promise<Return
 }
 
 export interface ParamsSignUp {
+  email: string;
   username: string;
   password: string;
   confirmPassword: string;
@@ -35,9 +36,9 @@ export interface ReturnSignUp {
   }
 }
 
-export async function signup({ username, password, confirmPassword }: ParamsSignUp): Promise<ReturnSignUp> {
+export async function signup({ email, username, password }: ParamsSignUp): Promise<ReturnSignUp> {
 
   return axios
-    .post<any, any>(SERVER + 'accounts/signup/', { username, password, confirmPassword });
+    .post<any, any>(SERVER + 'accounts/signup/', { email, username, password });
 
 }
