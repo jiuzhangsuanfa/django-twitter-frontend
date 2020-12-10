@@ -57,19 +57,18 @@ export default function LoginPage({ history }: { history: any }) {
 
   const handleLogin = async (data: ParamsLogin) => {
     try {
-      const result = await dispatch(loginAction(data));
-      console.log({ result });
+      await dispatch(loginAction(data));
       history.push('/');
     } catch (error) {
       let message = '';
-      switch (error.message) {
-        case 'Network Error':
-          message = '网络异常，请检查网络';
+      switch (error.response.status) {
+        case 400:
+          message = '用户名或密码错误';
           break;
         default:
           message = '登录失败，请稍后重试';
       }
-      enqueueSnackbar(message, { variant: 'error' });
+      enqueueSnackbar(message, { variant: 'error', autoHideDuration: 5000 });
     }
   }
 

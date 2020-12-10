@@ -24,9 +24,22 @@ export default function SignUpPage({ history }: { history: any }) {
 
   const { register, handleSubmit, watch, errors, setValue } = useForm<ParamsSignUp>();
 
+  const setEmail = (email: string) => setValue('email', email);
   const setUsername = (username: string) => setValue('username', username);
   const setPassword = (password: string) => setValue('password', password);
   const setConfirmPassword = (confirmPassword: string) => setValue('confirmPassword', confirmPassword);
+
+  const getErrorMessageFromEmail = () => {
+    if (!errors.email) { return ''; }
+    switch (errors.email.type) {
+      case 'required':
+        return '请输入邮箱';
+      case 'pattern':
+        return '邮箱格式有误';
+      default:
+        return '邮箱格式有误';
+    }
+  }
 
   const getErrorMessageFromUsername = () => {
     if (!errors.username) { return ''; }
@@ -57,7 +70,6 @@ export default function SignUpPage({ history }: { history: any }) {
   }
 
   const getErrorMessageFromConfirmPassword = () => {
-    console.debug(errors.confirmPassword?.type);
     if (!errors.confirmPassword) { return ''; }
     switch (errors.confirmPassword.type) {
       case 'required':
@@ -71,19 +83,19 @@ export default function SignUpPage({ history }: { history: any }) {
 
   const handleSignUp = async (data: ParamsSignUp) => {
     try {
-      const result = await dispatch(signUpAction(data));
-      console.debug({ result });
+      await dispatch(signUpAction(data));
       history.push('/');
     } catch (error) {
+      console.log(error)
       let message = '';
-      switch (error.message) {
-        case 'Network Error':
-          message = '网络异常，请检查网络';
+      switch (error.response.status) {
+        case 400:
+          message = '用户名或邮箱已被占用';
           break;
         default:
           message = '注册失败，请稍后重试';
       }
-      enqueueSnackbar(message, { variant: 'error' });
+      enqueueSnackbar(message, { variant: 'error', autoHideDuration: 5000 });
     }
   }
 
@@ -96,10 +108,23 @@ export default function SignUpPage({ history }: { history: any }) {
         <form onSubmit={handleSubmit(data => handleSignUp(data))}>
           <TextField
             className={styles.input}
+            label="邮箱"
+            placeholder="请输入邮箱"
+            variant="outlined"
+            style={{ marginTop: '1rem', marginBottom: '1rem' }}
+            autoComplete="email"
+            onChange={event => setEmail(event.currentTarget.value)}
+            name="email"
+            inputRef={register({ required: true, pattern: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/ })}
+            error={!!errors.email}
+            helperText={getErrorMessageFromEmail()}
+          />
+          <TextField
+            className={styles.input}
             label="用户名"
             placeholder="请输入用户名"
             variant="outlined"
-            style={{ marginTop: '1rem', marginBottom: '1rem' }}
+            style={{ marginBottom: '1rem' }}
             autoComplete="username"
             onChange={event => setUsername(event.currentTarget.value)}
             name="username"
