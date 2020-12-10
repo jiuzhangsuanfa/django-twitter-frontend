@@ -20,3 +20,24 @@ export async function login({ username, password }: ParamsLogin): Promise<Return
     .post<any, any>(SERVER + 'login', { username, password });
 
 }
+
+export interface ParamsSignUp {
+  username: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface ReturnSignUp {
+  token: string;
+  user: {
+    username: string;
+    avatar: string;
+  }
+}
+
+export async function signup({ username, password, confirmPassword }: ParamsSignUp): Promise<ReturnSignUp> {
+
+  return axios
+    .post<any, any>(SERVER + 'signup', { username, password, confirmPassword });
+
+}
